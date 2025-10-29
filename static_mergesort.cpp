@@ -79,7 +79,7 @@ int main() {
     fout << "Depth,Time\n";
 
     for (int depth = 2; depth <= 10; depth++) {
-        vector<double> temp = arr;  // copy to avoid sorting same data
+        vector<double> temp = arr;  
         double timeTaken = testDepthThreshold(temp, depth);
         cout << setw(10) << depth << setw(20) << timeTaken << "\n";
         fout << depth << "," << timeTaken << "\n";

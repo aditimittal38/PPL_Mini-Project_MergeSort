@@ -53,7 +53,7 @@ void mergeSortParallelStatic(vector<double> &arr, int left, int right, int depth
 }
 
 // ------------------ Parallel Merge Sort (Dynamic Threshold) ------------------
-void mergeSortParallelDynamic(vector<double> &arr, int left, int right, int THRESHOLD = 40000) {
+void mergeSortParallelDynamic(vector<double> &arr, int left, int right, int THRESHOLD = 10000) {
     if (left < right) {
         int mid = left + (right - left) / 2;
 
@@ -76,9 +76,6 @@ void mergeSortParallelDynamic(vector<double> &arr, int left, int right, int THRE
 
 // ------------------ Main Function ------------------
 int main() {
-    ios::sync_with_stdio(false);
-    cin.tie(nullptr);
-
     int n;
     cout << "Enter number of elements: ";
     cin >> n;
@@ -93,6 +90,7 @@ int main() {
 
     double start, end;
     cout << "Sorting " << n << " elements...\n";
+
     // 1. Sequential Merge Sort
     start = omp_get_wtime();
     mergeSortSequential(arr_seq, 0, n - 1);
@@ -135,20 +133,3 @@ int main() {
 
     return 0;
 }
-
-/*
-Compile:
-    g++ -fopenmp -O2 mergesort_double.cpp -o mergesort_double
-
-Generate Input:
-    python3 - <<EOF
-    import random
-    n = 10000000
-    print(n)
-    for _ in range(n):
-        print(round(random.uniform(0, 10000), 3))
-    EOF > input.txt
-
-Run:
-    ./mergesort_double < input.txt
-*/
