@@ -98,7 +98,8 @@ int main() {
     mergeSortSequential(arr_seq, 0, n - 1);
     end = omp_get_wtime();
     cout << fixed << setprecision(5);
-    cout << "Sequential Merge Sort Time: " << (end - start) << " s\n";
+    double time_seq = end - start;
+    cout << "Sequential Merge Sort Time: " << time_seq << " s\n";
 
     // 2. Parallel Merge Sort (Static Depth)
     start = omp_get_wtime();
@@ -106,9 +107,12 @@ int main() {
     {
         #pragma omp single
         mergeSortParallelStatic(arr_static, 0, n - 1);
+        #pragma omp taskwait 
     }
     end = omp_get_wtime();
-    cout << "Parallel Merge Sort (Static Depth) Time: " << (end - start) << " s\n";
+    double time_static = end - start;
+    cout << "Parallel Merge Sort (Static Depth) Time: " << time_static << " s\n";
+    cout << "Speedup (Static): " << time_seq / time_static << "x\n";
 
     // 3. Parallel Merge Sort (Dynamic Threshold)
     start = omp_get_wtime();
@@ -116,9 +120,12 @@ int main() {
     {
         #pragma omp single
         mergeSortParallelDynamic(arr_dynamic, 0, n - 1, 10000); // threshold = 10k
+        #pragma omp taskwait 
     }
     end = omp_get_wtime();
-    cout << "Parallel Merge Sort (Dynamic Threshold) Time: " << (end - start) << " s\n";
+    double time_dynamic = end - start;
+    cout << "Parallel Merge Sort (Dynamic Threshold) Time: " << time_dynamic << " s\n";
+    cout << "Speedup (Dynamic): " << time_seq / time_dynamic << "x\n";
 
     // Verify correctness
     if (arr_seq == arr_static && arr_seq == arr_dynamic)
